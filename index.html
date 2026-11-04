@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PlanDroid — Mobile Engineering Mastery System</title>
+  <meta name="description"
+    content="Mobile engineering curriculum with 57 core labs, 8 phases, AI-powered mobile engineering, product domain tracks, failure scenarios, interview preparation and integration capstones." />
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts: Inter & JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap"
+    rel="stylesheet">
+  <!-- Lucide Vector Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <!-- Tailwind dark mode config -->
+  <script>
+    if (typeof tailwind !== 'undefined') {
+      tailwind.config = {
+        darkMode: 'class',
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ['Inter', 'sans-serif'],
+              mono: ['JetBrains Mono', 'monospace']
+            },
+            colors: {
+              accent: '#3DDC84'
+            }
+          }
+        }
+      };
+    }
+  </script>
+
+  <!-- Design System & Component Styles -->
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+
+<body>
+
+  <!-- TOP NAVIGATION HEADER -->
+  <header class="app-header">
+    <div class="max-w-[1600px] mx-auto flex flex-wrap items-center justify-between gap-3">
+      <!-- Brand -->
+      <div class="flex items-center gap-3">
+        <button onclick="toggleMobileSidebar()" class="lg:hidden btn btn-secondary p-2" title="Toggle Navigation">
+          <i data-lucide="menu" class="w-5 h-5"></i>
+        </button>
+        <div onclick="navigateSection('overview')" class="flex items-center gap-3 cursor-pointer group">
+          <div class="w-10 h-10 rounded-lg flex items-center justify-center group-hover:opacity-85 transition-opacity"
+            style="background:#3DDC84">
+            <!-- Android Robot Head -->
+            <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path
+                d="M6.2 7.2L4.3 4.2C4.1 3.9 4.2 3.5 4.5 3.3C4.8 3.1 5.2 3.2 5.4 3.5L7.4 6.6C8.8 5.9 10.3 5.5 12 5.5C13.7 5.5 15.2 5.9 16.6 6.6L18.6 3.5C18.8 3.2 19.2 3.1 19.5 3.3C19.8 3.5 19.9 3.9 19.7 4.2L17.8 7.2C20.4 9.1 22 12.1 22 15.5H2C2 12.1 3.6 9.1 6.2 7.2Z"
+                fill="#000" />
+              <circle cx="8.5" cy="11.5" r="1.15" fill="#3DDC84" />
+              <circle cx="15.5" cy="11.5" r="1.15" fill="#3DDC84" />
+            </svg>
+          </div>
+          <div>
+            <div class="flex items-center gap-2.5">
+              <span class="font-extrabold text-lg sm:text-xl tracking-tight" style="color:#3DDC84">
+                Plandroid
+              </span>
+            </div>
+            <p class="text-xs text-muted hidden sm:block m-0">Android + KMP Engineering Mastery Platform</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Instant Search -->
+      <div class="flex-1 max-w-md mx-2">
+        <div class="relative">
+          <input id="global-search" type="text"
+            placeholder="Search labs, FinTech, POS, scenarios, Coroutines, Compose, Room, KMP..."
+            oninput="handleGlobalSearch(this.value)" class="app-input w-full pr-16" />
+          <button id="clear-search-btn" onclick="clearGlobalSearch()"
+            class="hidden absolute right-2.5 top-1/2 -translate-y-1/2 text-muted hover:text-main text-xs font-mono">
+            CLEAR
+          </button>
+        </div>
+      </div>
+
+      <!-- Right Action Controls -->
+      <div class="flex items-center gap-2">
+        <div class="hidden xl:flex items-center gap-2.5 app-subtle px-3 py-1.5">
+          <div class="text-right">
+            <div class="text-[10px] text-muted uppercase font-mono">Core Lab Progress</div>
+            <div id="header-progress-text" class="text-xs font-mono font-bold text-accent">0 / 57 (0%)</div>
+          </div>
+          <div class="w-20 h-1.5 rounded-full overflow-hidden" style="background:rgba(255,255,255,0.1)">
+            <div id="header-progress-bar" class="h-full transition-all duration-300"
+              style="width: 0%; background:#3DDC84"></div>
+          </div>
+        </div>
+
+<button onclick="openDataModal()" class="btn btn-secondary" title="Backup or Restore JSON">
+          <i data-lucide="database" class="w-4 h-4"></i>
+        </button>
+        <button onclick="toggleTheme()" class="btn btn-secondary" title="Toggle Light / Dark Mode">
+          <i id="theme-toggle-icon" data-lucide="sun" class="w-4 h-4"></i>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN WORKSPACE SHELL -->
+  <div class="app-shell">
+    <!-- SIDEBAR NAVIGATION -->
+    <aside id="app-sidebar" class="sidebar">
+      <div class="p-3.5 border-b sidebar-divider overflow-y-auto" style="max-height: 56%;">
+        <div class="flex items-center justify-between mb-2.5 px-1">
+          <span class="text-[11px] font-mono uppercase tracking-wider font-bold text-accent flex items-center gap-1.5">
+            <i data-lucide="cpu" class="w-3.5 h-3.5"></i> Plandroid Tracks
+          </span>
+          <span
+            class="text-[10px] font-mono px-2 py-0.5 rounded-full bg-emerald-500/15 text-accent font-semibold">Core</span>
+        </div>
+        <nav class="space-y-1">
+          <button onclick="navigateSection('overview')" data-sec="overview" class="sec-nav-btn">
+            <span class="flex items-center gap-2"><i data-lucide="compass" class="w-4 h-4"></i> 0. Overview &amp;
+              Dashboard</span>
+            <span class="font-mono text-[10px] opacity-70">Home</span>
+          </button>
+          <button onclick="navigateSection('mindset')" data-sec="mindset" class="sec-nav-btn">
+            <span class="flex items-center gap-2"><i data-lucide="shield-check" class="w-4 h-4"></i> 1. Mindset &amp;
+              Core Rules</span>
+            <span class="font-mono text-[10px] opacity-70">Sec 1</span>
+          </button>
+          <button onclick="navigateSection('phases')" data-sec="phases" class="sec-nav-btn">
+            <span class="flex items-center gap-2"><i data-lucide="layers" class="w-4 h-4"></i> 2. Phases &amp; Capstones</span>
+            <span class="font-mono text-[10px] text-accent">8 Capstones</span>
+          </button>
+          <button onclick="navigateSection('labs')" data-sec="labs" class="sec-nav-btn">
+            <span class="flex items-center gap-2"><i data-lucide="flask-conical" class="w-4 h-4"></i> 3. The Engineering
+              Labs</span>
+            <span class="font-mono text-[10px] text-accent-sec font-bold">57 Labs</span>
+          </button>
+          <button onclick="navigateSection('mastery')" data-sec="mastery" class="sec-nav-btn">
+            <span class="flex items-center gap-2"><i data-lucide="sliders" class="w-4 h-4"></i> 4. Mastery
+              Verification</span>
+            <span class="font-mono text-[10px] opacity-70">1–5 Matrix</span>
+          </button>
+          <button onclick="navigateSection('interview')" data-sec="interview" class="sec-nav-btn">
+            <span class="flex items-center gap-2"><i data-lucide="terminal" class="w-4 h-4"></i> 5. Interview Readiness
+              Map</span>
+            <span class="font-mono text-[10px] opacity-70">Sec 5</span>
+          </button>
+          <button onclick="navigateSection('resources')" data-sec="resources" class="sec-nav-btn">
+            <span class="flex items-center gap-2"><i data-lucide="book-open" class="w-4 h-4"></i> 6. Resource
+              Library</span>
+            <span class="font-mono text-[10px] opacity-70">Sec 6</span>
+          </button>
+          <div class="flex items-center justify-between mt-4 mb-2 pt-3 border-t sidebar-divider px-1">
+            <span class="text-[11px] font-mono uppercase tracking-wider text-accent-sec font-bold">Product & Scenario Practice</span>
+          </div>
+          <button onclick="navigateSection('domains')" data-sec="domains" class="sec-nav-btn">
+            <span class="flex items-center gap-2"><i data-lucide="blocks" class="w-4 h-4"></i> Domain Tracks</span>
+            <span class="font-mono text-[10px] text-accent">10 paths</span>
+          </button>
+          <button onclick="navigateSection('scenarios')" data-sec="scenarios" class="sec-nav-btn">
+            <span class="flex items-center gap-2"><i data-lucide="siren" class="w-4 h-4"></i> Failure Scenarios</span>
+            <span class="font-mono text-[10px] text-accent-sec">29 cases</span>
+          </button>
+          <button onclick="navigateSection('coverage')" data-sec="coverage" class="sec-nav-btn">
+            <span class="flex items-center gap-2"><i data-lucide="scan-search" class="w-4 h-4"></i> Skill Coverage</span>
+            <span class="font-mono text-[10px] opacity-70">Evidence map</span>
+          </button>
+        </nav>
+
+        <div class="flex items-center justify-between mt-4 mb-2 pt-3 border-t sidebar-divider px-1">
+          <span class="text-[11px] font-mono uppercase tracking-wider text-accent-sec font-bold">Study Tools</span>
+        </div>
+        <nav class="space-y-1">
+          <button onclick="navigateSection('flashcards')" data-sec="flashcards" class="sec-nav-btn">
+            <span class="flex items-center gap-2"><i data-lucide="layers-3" class="w-4 h-4"></i>Flashcards</span>
+            <span id="nav-flashcards-count" class="font-mono text-[10px] text-accent">Deck</span>
+          </button>
+        </nav>
+      </div>
+
+      <!-- Quick Jump 57 Labs -->
+      <div class="p-3 border-b sidebar-divider flex items-center justify-between gap-2">
+        <span class="text-[11px] font-mono uppercase tracking-wider font-bold text-accent">Quick Jump · 57 Labs</span>
+        <select id="sidebar-phase-filter" onchange="renderSidebarLabsIndex()" class="app-input py-1 px-2 text-[11px]">
+          <option value="all">All Phases (57)</option>
+          <option value="Phase 1">Phase 1 (6)</option>
+          <option value="Phase 2">Phase 2 (6)</option>
+          <option value="Phase 3">Phase 3 (7)</option>
+          <option value="Phase 4">Phase 4 (14)</option>
+          <option value="Phase 5">Phase 5 (10)</option>
+          <option value="Phase 6">Phase 6 (2)</option>
+          <option value="Phase 7">Phase 7 (5)</option>
+          <option value="Phase 8">Phase 8 (7)</option>
+        </select>
+      </div>
+      <div id="sidebar-labs-list" class="flex-1 overflow-y-auto p-2 space-y-1"></div>
+    </aside>
+
+    <!-- MAIN VIEWPORT -->
+    <main class="flex-1 min-w-0 p-4 sm:p-6 lg:p-8 overflow-x-hidden">
+      <div id="main-view-container"></div>
+    </main>
+  </div>
+
+  <!-- DATA BACKUP / RESTORE MODAL -->
+  <div id="data-modal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/75 p-4 backdrop-blur-sm">
+    <div class="app-surface max-w-lg w-full">
+      <div class="flex items-center justify-between mb-3">
+        <h3 class="text-base font-bold text-main m-0 flex items-center gap-2">
+          <i data-lucide="database" class="w-4 h-4 text-accent"></i>
+          Backup &amp; Restore Core Lab Progress (JSON)
+        </h3>
+        <button onclick="closeDataModal()" class="btn btn-secondary py-1 px-2.5">
+          <i data-lucide="x" class="w-4 h-4"></i>
+        </button>
+      </div>
+      <p class="text-xs text-secondary mb-3">
+        Your completed labs, domain labs, scenarios, checklists, mastery scores, flashcards, Capstones, and ADR notes are stored
+        automatically in your browser's <code class="text-accent font-mono">localStorage</code>. Copy this JSON to back
+        it up or paste a backup to restore.
+      </p>
+      <textarea id="progress-json-box" rows="7" class="app-input w-full font-mono text-xs mb-3"></textarea>
+      <div id="modal-status-msg" class="text-xs text-accent mb-3 hidden font-mono"></div>
+      <div class="flex flex-wrap items-center justify-between gap-2">
+        <div class="flex gap-2">
+          <button onclick="copyProgressJson()" class="btn btn-primary">
+            <i data-lucide="copy" class="w-3.5 h-3.5"></i> Copy JSON
+          </button>
+          <button onclick="importProgressJson()" class="btn btn-secondary">
+            <i data-lucide="upload" class="w-3.5 h-3.5"></i> Restore JSON
+          </button>
+        </div>
+        <button onclick="resetAllProgress()" class="btn btn-secondary text-rose-500">
+          <i data-lucide="trash-2" class="w-3.5 h-3.5"></i> Reset All Progress
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- APPLICATION SCRIPTS (load order matters: curriculum → domain/scenario data → state → renderers → app) -->
+  <script src="js/data.js"></script>
+  <script src="js/domain-data.js"></script>
+  <script src="js/scenario-data.js"></script>
+  <script src="js/ai-data.js"></script>
+  <script src="js/interview-data.js"></script>
+  <script src="js/state.js"></script>
+  <script src="js/flashcards.js"></script>
+  <script src="js/renderers.js"></script>
+  <script src="js/app.js"></script>
+
+</body>
+
+</html>
