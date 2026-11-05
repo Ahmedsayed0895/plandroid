@@ -159,13 +159,23 @@ function closeMobileSidebar() {
   if (sb) sb.classList.remove('open');
 }
 
-function toggleTheme() {
-  const isDark = document.documentElement.classList.toggle('dark');
+function syncThemeUI() {
+  const isDark = document.documentElement.classList.contains('dark');
   const icon = document.getElementById('theme-toggle-icon');
   if (icon) {
     icon.setAttribute('data-lucide', isDark ? 'sun' : 'moon');
     if (typeof lucide !== 'undefined') lucide.createIcons();
   }
+}
+
+function toggleTheme() {
+  const isDark = document.documentElement.classList.toggle('dark');
+  try {
+    localStorage.setItem('plandroid_theme', isDark ? 'dark' : 'light');
+  } catch (e) {
+    console.warn('Theme preference could not be saved:', e);
+  }
+  syncThemeUI();
 }
 
 function openDataModal() {
@@ -233,6 +243,7 @@ function resetAllProgress() {
 
 // --- BOOTSTRAP ON DOM READY ---
 window.addEventListener('DOMContentLoaded', () => {
+  syncThemeUI();
   loadState();
   buildFlashcardsDeck();
   updateGlobalProgressUI();

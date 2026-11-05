@@ -1,7 +1,16 @@
 <!DOCTYPE html>
 <html lang="en" class="dark">
-
 <head>
+<script>
+  (() => {
+    try {
+      const savedTheme = localStorage.getItem('plandroid_theme');
+      document.documentElement.classList.toggle('dark', savedTheme !== 'light');
+    } catch (_) {
+      document.documentElement.classList.add('dark');
+    }
+  })();
+</script>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>PlanDroid — Mobile Engineering Mastery System</title>

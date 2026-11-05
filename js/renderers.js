@@ -93,8 +93,11 @@ function renderOverviewView() {
           </div>
         </div>
         <div class="dash-progress-art" aria-label="${pct}% of labs completed">
-          <div class="dash-progress-ring" style="--progress:${pct * 3.6}deg"><div class="dash-progress-ring-inner"><strong>${pct}<small>%</small></strong><span>CURRICULUM<br>COMPLETE</span></div></div>
-          <div class="dash-ring-caption"><span><i></i>${doneCount} completed</span><span><i></i>${remaining} remaining</span></div>
+          <div class="dash-progress-ring" style="--progress:${pct * 3.6}deg"><div class="dash-progress-ring-inner"><strong>${pct}<small>%</small></strong></div></div>
+          <div class="dash-progress-summary">
+            <strong class="dash-progress-title">CURRICULUM COMPLETE</strong>
+            <div class="dash-ring-caption"><span><i></i><b>${doneCount}</b> completed</span><span><i></i><b>${remaining}</b> remaining</span></div>
+          </div>
           <div class="dash-orbit dash-orbit-one"></div><div class="dash-orbit dash-orbit-two"></div>
           <span class="dash-art-cross dash-cross-one">+</span><span class="dash-art-cross dash-cross-two">+</span>
         </div>
