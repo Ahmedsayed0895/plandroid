@@ -911,11 +911,6 @@ function renderInterviewReadinessView() {
         <article><span>04 · VERIFY</span><b>Prove the behavior</b><p>Describe tests, traces, metrics and failure cases that would validate the design.</p></article>
       </section>
 
-      <section class="interview-market-section">
-        <div class="interview-section-heading"><div><span class="interview-kicker">MARKET ALIGNMENT · ROLE SIGNALS</span><h2>What current role profiles emphasize</h2><p>This map is calibrated against current mid/senior role descriptions and interview preparation references—not copied from one company’s confidential question bank. Hiring loops vary by team and level.</p></div><span class="interview-count">Role snapshot</span></div>
-        <div class="interview-market-grid">${INTERVIEW_MARKET_REFERENCES.map(ref=>`<a href="${escapeHtml(ref.url)}" target="_blank" rel="noopener noreferrer"><b>${escapeHtml(ref.title)}</b><p>${escapeHtml(ref.note)}</p><span>Open reference <i data-lucide="arrow-up-right"></i></span></a>`).join('')}</div>
-        <div class="interview-market-signals"><b>Recurring hiring signals:</b><span>Kotlin + Android fundamentals</span><span>Compose + XML/legacy awareness</span><span>Coroutines / Flow</span><span>Architecture + offline data</span><span>Testing + performance</span><span>CI/CD + Play releases</span><span>Debugging + ownership</span><span>Communication + trade-offs</span></div>
-      </section>
 
       <section class="interview-design-section">
         <div class="interview-section-heading"><div><span class="interview-kicker">SYSTEM DESIGN & DEEP TECHNICAL ROUNDS</span><h2>Design prompts from real mobile product constraints</h2><p>Use a whiteboard or a README. State assumptions, sketch components and data flow, then walk through failures and trade-offs.</p></div><span class="interview-count">${designs.length} prompts</span></div>
